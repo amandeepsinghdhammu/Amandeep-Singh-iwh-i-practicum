@@ -28,8 +28,29 @@ app.get('/update-cobj', (req, res) => {
 
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
 
-// * Code for Route 3 goes here
+app.post('/update-cobj', async (req, res) => {
+    const plantsEndpoint = 'https://api.hubspot.com/crm/v3/objects/plants';
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
+    }
 
+    const data = {
+        properties: {
+            name: req.body.name,
+            plant_class: req.body.plant_class,
+            plant_environment: req.body.plant_environment
+        }
+    }
+
+    try {
+        const response = await axios.post(plantsEndpoint, data, { headers });
+        console.log('Results:', JSON.stringify(response.data));
+        // Redirects to home page
+    } catch (error) {
+        console.error(error);
+    }
+});
 
 // * Localhost
 app.listen(3000, () => console.log('Listening on http://localhost:3000'));
